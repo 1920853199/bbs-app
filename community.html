@@ -113,7 +113,7 @@
                                 </p>
                                 <ul>
                                     <li class="single">
-                                        <img src="images/demo.jpg">
+                                        <img src="images/demo.jpg" data-index="0">
                                     </li>
                                 </ul>
                                 
@@ -186,12 +186,12 @@
                                 <ul>
                                     <li>
                                         <div>
-                                            <img src="images/demo.jpg">
+                                            <img src="images/demo.jpg"  data-index="1">
                                         </div>
                                     </li>
                                     <li>
                                         <div>
-                                            <img src="images/demo.jpg">
+                                            <img src="images/demo.jpg"  data-index="2">
                                         </div>
                                     </li>
                                 </ul>
@@ -394,13 +394,13 @@
                 </span>
                 <span class="aui-tabBar-item-text">社区</span>
             </a>
-            <a href="javascript:;" class="aui-tabBar-item ">
+            <a href="/chat.html" class="aui-tabBar-item ">
                 <span class="aui-tabBar-item-icon">
                     <i class="icon icon-credit"></i>
                 </span>
                 <span class="aui-tabBar-item-text">聊天</span>
             </a>
-            <a href="javascript:;" class="aui-tabBar-item">
+            <a href="/user.html" class="aui-tabBar-item">
                 <span class="aui-tabBar-item-icon">
                     <i class="icon icon-car"></i>
                 </span>
@@ -409,19 +409,104 @@
         </footer>
     </section>
 </body>
-
+</html>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/slider.js"></script>
 <script type="text/javascript">
-
     $(function () {
         $('.cl-tabpage-title .cl-tabpage-item').click(function(){
-             indexC = $(this).index();
-             console.log(indexC)
-			$(this).addClass('active-title').siblings().removeClass('active-title');
-			$('.cl-tabpage-cont__wrap .cl-tabpage-item').eq(indexC).addClass('active-content').siblings().removeClass('active-content');
-		})
-    
+            indexC = $(this).index();
+            console.log(indexC)
+            $(this).addClass('active-title').siblings().removeClass('active-title');
+            $('.cl-tabpage-cont__wrap .cl-tabpage-item').eq(indexC).addClass('active-content').siblings().removeClass('active-content');
+        })
     });
-    </script>
-</html>
+</script>
+
+<script type="text/javascript" src="js/fastclick.js"></script>
+<script type="text/javascript" src="js/imageViewer.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        FastClick.attach(document.body);
+
+        function getElement(index) {
+            // 可以不返回任何一个值，仅仅传入一个空函数指明要开启渐变动画
+            return document.getElementById('img' + (index + 1));
+        }
+
+        // 图片对象说明:
+        // thumbnail: 缩略图的链接(非必传)
+        // url: 原图的链接(必传)
+        var images = [
+            {url: 'images/demo.jpg'},
+            {url: 'images/demo.jpg'},
+            {url: 'images/demo.jpg'},
+        ];
+        window.imageViewer = new ImageViewer(images, {
+            container: 'body',
+            enableScale: true,
+            enableTapClose: true,
+            startIndex: 0,
+            fadeInFn: getElement,
+            fadeOutFn: getElement,
+            // headerRender: function () {
+            //     setTimeout(function () {
+            //         document.getElementById('close').addEventListener('click', function () {
+            //             imageViewer.close();
+            //         }, false);
+            //     }, 0);
+            //     return '<div id="close">关闭</div>';
+            // },
+            footerRender: function () {
+                return '<span class="number-current"></span>/<span class="number-total"></span>';
+            },
+            beforeSwipe: function (current) {
+                console.info('current-before: ' + current);
+            },
+            afterSwipe: function (current) {
+                console.info('current-after: ' + current);
+            },
+            swipeLastLeft: function (imageViewer, distance) {
+                console.log('swipeLastLeft', distance);
+                // if (distance > 50) {
+                //     imageViewer.setImageOption([{
+                //         thumbnail: 'thumbnails/6.jpg',
+                //         url: 'images/6.jpg'
+                //     }]);
+                //     return true;
+                // }
+            },
+            swipeFirstRight: function (imageViewer, distance) {
+                console.log('swipeFirstRight', distance);
+                // if (distance > 30) {
+                //     imageViewer.setImageOption([
+                //         {thumbnail: 'thumbnails/7.jpg', url: 'images/7.jpg'},
+                //         {thumbnail: 'thumbnails/8.jpg', url: 'images/8.jpg'}
+                //     ]);
+                //     return true;
+                // }
+            }
+        });
+
+        // document.getElementsByClassName('cl')[0].addEventListener('click', function (event) {
+        //     event.stopPropagation();
+        //     event.preventDefault()
+        //     var index = event.target.getAttribute('data-index');
+        //     if (index) {
+        //         imageViewer.open(parseInt(index));
+        //         // imageViewer.open(0);
+        //     }
+        // }, false);
+    }, false);
+
+    $('img').click(function(e){
+        //e.stopPropagation()
+        e.preventDefault()
+        console.log(11);
+        var index = event.target.getAttribute('data-index');
+            if (index) {
+                imageViewer.open(parseInt(index));
+                // imageViewer.open(0);
+            }
+    });
+</script>
